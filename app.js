@@ -17,4 +17,15 @@ console.log("Server started.");
 var SOCKET_LIST = {};
 
 var io = require("socket.io")(serv, {});
-io.sockets.on("connection", function (socket) {});
+io.sockets.on("connection", function (socket) {
+  socket.id = Math.random();
+  SOCKET_LIST[socket.id] = socket;
+
+  socket.on("box_click", function (data) {
+    log("box_click: " + data.id);
+  });
+
+  socket.on("disconnect", function () {
+    delete SOCKET_LIST[socket.id];
+  });
+});

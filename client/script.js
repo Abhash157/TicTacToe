@@ -1,5 +1,3 @@
-const io = require("socket.io");
-
 const socket = io();
 
 let boxes = document.querySelectorAll(".box");
