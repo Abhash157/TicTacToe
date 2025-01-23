@@ -14,18 +14,38 @@ app.use("/client", express.static(__dirname + "/client"));
 serv.listen(2000);
 console.log("Server started.");
 
+let Player = function (id) {
+  let self = {
+    id: id,
+    turn: false,
+  };
+  return self;
+};
+
 var SOCKET_LIST = {};
+var PLAYER_LIST = {};
 
 var io = require("socket.io")(serv, {});
 io.sockets.on("connection", function (socket) {
   socket.id = Math.random();
   SOCKET_LIST[socket.id] = socket;
 
+  let player = Player(socket.id);
+  PLAYER_LIST[socket.id] = player;
+
   socket.on("box_click", function (data) {
-    log("box_click: " + data.id);
+    updateBox(data.id);
   });
 
   socket.on("disconnect", function () {
     delete SOCKET_LIST[socket.id];
   });
 });
+
+function updateBox(box_id) {
+  let content = "X";
+  for (let i in SOCKET_LIST) {
+    let socket = SOCKET_LIST[i];
+    socket.emit("box_update", { value: content, id: box_id });
+  }
+}

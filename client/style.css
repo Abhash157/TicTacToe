@@ -16,5 +16,14 @@ body {
 .box {
   height: 155px;
   width: 155px;
-  background: #d3d4c7;
+  background: #d4c7c7;
+}
+.box span {
+  height: 100%;
+  width: 100%;
+  font-size: 4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
