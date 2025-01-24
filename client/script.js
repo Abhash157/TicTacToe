@@ -41,8 +41,18 @@ function checkWinner() {
 
   if (winner) {
     let alert = document.querySelector(".alert");
+    let alertText = document.querySelector(".alert h2");
+    let alertButton = document.querySelector(".alert button");
     alert.style.display = "flex";
-    alert.innerHTML = `Winner: ${winner}`;
-    socket.emit("winner", { winner: winner });
+    alertText.innerHTML = `Winner: ${winner}`;
+    alertButton.addEventListener("click", () => {
+      socket.emit("new-game");
+    });
   }
 }
+
+socket.on("new-game", () => {
+  window.location.reload();
+  socket.disconnect();
+  socket.connect();
+});

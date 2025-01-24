@@ -32,9 +32,19 @@ io.sockets.on("connection", function (socket) {
 
   let player = Player(socket.id);
   PLAYER_LIST[socket.id] = player;
+  if (Object.keys(SOCKET_LIST).length == 1) {
+    PLAYER_LIST[socket.id].turn = true;
+  }
 
   socket.on("box_click", function (data) {
     updateBox(data.id, socket);
+  });
+
+  socket.on("new-game", function () {
+    for (let i in SOCKET_LIST) {
+      let socket = SOCKET_LIST[i];
+      socket.emit("new-game");
+    }
   });
 
   socket.on("disconnect", function () {
@@ -44,10 +54,18 @@ io.sockets.on("connection", function (socket) {
 
 function updateBox(box_id, socket) {
   let content = "";
-  if (socket.id == Object.keys(SOCKET_LIST)[0]) {
+  log(PLAYER_LIST[socket.id].turn + "  " + Object.keys(SOCKET_LIST));
+  if (socket.id == Object.keys(SOCKET_LIST)[0] && PLAYER_LIST[socket.id].turn) {
     content = "O";
-  } else if (socket.id == Object.keys(SOCKET_LIST)[1]) {
+    PLAYER_LIST[Object.keys(SOCKET_LIST)[0]].turn = false;
+    PLAYER_LIST[Object.keys(SOCKET_LIST)[1]].turn = true;
+  } else if (
+    socket.id == Object.keys(SOCKET_LIST)[1] &&
+    PLAYER_LIST[socket.id].turn
+  ) {
     content = "X";
+    PLAYER_LIST[Object.keys(SOCKET_LIST)[1]].turn = false;
+    PLAYER_LIST[Object.keys(SOCKET_LIST)[0]].turn = true;
   }
 
   for (let i in SOCKET_LIST) {
