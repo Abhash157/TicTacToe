@@ -28,3 +28,18 @@ body {
   cursor: pointer;
   user-select: none;
 }
+
+.alert {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #8f8f8f;
+  height: 300px;
+  width: 300px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}

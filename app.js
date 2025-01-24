@@ -46,9 +46,10 @@ function updateBox(box_id, socket) {
   let content = "";
   if (socket.id == Object.keys(SOCKET_LIST)[0]) {
     content = "O";
-  } else {
+  } else if (socket.id == Object.keys(SOCKET_LIST)[1]) {
     content = "X";
   }
+
   for (let i in SOCKET_LIST) {
     let socket = SOCKET_LIST[i];
     socket.emit("box_update", { value: content, id: box_id });
