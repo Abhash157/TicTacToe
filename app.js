@@ -34,7 +34,7 @@ io.sockets.on("connection", function (socket) {
   PLAYER_LIST[socket.id] = player;
 
   socket.on("box_click", function (data) {
-    updateBox(data.id);
+    updateBox(data.id, socket);
   });
 
   socket.on("disconnect", function () {
@@ -42,8 +42,13 @@ io.sockets.on("connection", function (socket) {
   });
 });
 
-function updateBox(box_id) {
-  let content = "X";
+function updateBox(box_id, socket) {
+  let content = "";
+  if (socket.id == Object.keys(SOCKET_LIST)[0]) {
+    content = "O";
+  } else {
+    content = "X";
+  }
   for (let i in SOCKET_LIST) {
     let socket = SOCKET_LIST[i];
     socket.emit("box_update", { value: content, id: box_id });
