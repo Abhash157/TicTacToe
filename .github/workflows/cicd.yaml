@@ -22,8 +22,7 @@ jobs:
 
       - name: Deploy to Azure Web App Service
         uses: azure/webapps-deploy@v2
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
         with:
-          name: dist
+          app-name: "tictactoe"
+          publish-profile: ${{ secrets.AZURE_WEB_PUBLISH_PROFILE }}
+          package: .
